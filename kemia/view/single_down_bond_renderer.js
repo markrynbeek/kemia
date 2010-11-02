@@ -56,6 +56,11 @@ kemia.view.SingleDownBondRenderer.prototype.render = function(bond, transform, p
     var coords = transform.transformCoords( [ leftside[0],leftside[1], rightside[0], rightside[1], bond.source.coord ]);
 
     var lines=7;
+	var multiply =Math.round(goog.math.Coordinate.distance(bond.source.coord, bond.target.coord))
+    if (multiply>1) {	
+	   lines*=multiply;
+    }
+	
 	var correct=0;
 	if( bond.target.symbol!="C")
 	   correct=1;
