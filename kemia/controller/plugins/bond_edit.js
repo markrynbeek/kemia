@@ -288,7 +288,26 @@ kemia.controller.plugins.BondEdit.prototype.dragBond = function(e, bond) {
 		d.bond = bond;
 		d.editor = this.editorObject;
 
+		d.start_x = e.screenX;
+		d.start_y = e.screenY;
 		d.addEventListener(goog.fx.Dragger.EventType.DRAG, function(e) {
+
+			var screenAngle =  goog.math.angle(d.start_x, d.start_y, d.screenX,d.screenY)
+			screenAngle = Math.round(screenAngle/10)*10;
+			var sine= Math.sin(-goog.math.toRadians(screenAngle))
+			var cosine= Math.cos(-goog.math.toRadians(screenAngle))
+			d.bond.molecule.group.clear();
+
+			var targX = d.bond.source.coord.x + (cosine)
+			var targY = d.bond.source.coord.y+  (sine)
+			d.bond.target.coord = new goog.math.Coordinate(targX, targY);
+			d.editor.setModelsSilently(d.editor.getModels());
+
+			
+			/*
+
+			//Previous implementation.
+			
 			d.bond.molecule.group.clear();
 			d._initDeltaX = d._initDeltaX || d.deltaX;
 			d._initDeltaY = d._initDeltaY || d.deltaY;
@@ -309,6 +328,7 @@ kemia.controller.plugins.BondEdit.prototype.dragBond = function(e, bond) {
 			d.bond.source.coord = coords[0];
 			d.bond.target.coord = coords[1];
 			d.editor.setModelsSilently(d.editor.getModels());
+			*/
 
 		});
 		d.addEventListener(goog.fx.Dragger.EventType.END, function(e) {
